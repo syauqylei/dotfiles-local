@@ -1,0 +1,36 @@
+set colorcolumn=0
+set list listchars=tab:\|\ ,trail:·,nbsp:·
+
+" hybrid material
+set background=dark
+colorscheme hybrid_material
+
+" nerd tree config
+let g:NERDTreeShowHidden = 1
+let g:NERDTreeMinimalUI = 1
+let g:NERDTreeIgnore = []
+let g:NERDTreeStatusline = ''
+" Automaticaly close nvim if NERDTree is only thing left open
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" Toggle
+nnoremap <silent> <C-b> :NERDTreeToggle<CR>
+
+let g:user_emmet_mode='n' 
+let g:user_emmet_leader_key=','
+
+" remap switching tabs
+nnoremap H gT
+nnoremap L gt
+
+" Go to tab by number
+noremap <leader>1 1gt
+noremap <leader>2 2gt
+noremap <leader>3 3gt
+noremap <leader>4 4gt
+noremap <leader>5 5gt
+noremap <leader>6 6gt
+noremap <leader>7 7gt
+noremap <leader>8 8gt
+noremap <leader>9 9gt
+noremap <leader>0 :tablast<cr>
+

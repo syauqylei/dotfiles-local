@@ -1,0 +1,8 @@
+Plug 'preservim/nerdtree'
+Plug 'kristijanhusak/vim-hybrid-material'
+Plug 'vim-airline/vim-airline'
+Plug 'Yggdroot/indentLine'
+Plug 'mattn/emmet-vim' 
+Plug 'ycm-core/YouCompleteMe' 
+Plug 'nikvdp/ejs-syntax'
+Plug 'wakatime/vim-wakatime'
