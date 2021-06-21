@@ -1,8 +1,12 @@
 Plug 'preservim/nerdtree'
-Plug 'kristijanhusak/vim-hybrid-material'
+Plug 'preservim/tagbar'
+Plug 'morhetz/gruvbox'
 Plug 'vim-airline/vim-airline'
 Plug 'Yggdroot/indentLine'
 Plug 'mattn/emmet-vim' 
 Plug 'ycm-core/YouCompleteMe' 
 Plug 'nikvdp/ejs-syntax'
 Plug 'wakatime/vim-wakatime'
+Plug 'turbio/bracey.vim', { 'do': 'npm install --prefix server'}
+Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
+Plug 'leafOfTree/vim-vue-plugin'
