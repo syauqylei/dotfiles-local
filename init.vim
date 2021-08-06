@@ -8,33 +8,70 @@ call plug#begin("~/.vim/plugged")
   Plug 'neovim/nvim-lspconfig'
   Plug 'hrsh7th/nvim-compe'
 
+  "python
+  Plug 'vim-scripts/indentpython.vim'
+  Plug 'ray-x/lsp_signature.nvim'
+
+  Plug 'tpope/vim-commentary'
+
   " File Explorer
   Plug 'kyazdani42/nvim-web-devicons' " for file icons
   Plug 'kyazdani42/nvim-tree.lua'
 
   Plug 'jiangmiao/auto-pairs'
   Plug 'tpope/vim-surround'
-  Plug 'Yggdroot/indentLine'
+  Plug 'lukas-reineke/indent-blankline.nvim'
   Plug 'tpope/vim-fugitive'
 
   "File Search
-  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-  Plug 'junegunn/fzf.vim'
+  Plug 'nvim-lua/popup.nvim'	
+  Plug 'nvim-lua/plenary.nvim'
+  Plug 'nvim-telescope/telescope.nvim'
 call plug#end()
 
 
 let mapleader=" "
 set termguicolors     " enable true colors support
 colorscheme gruvbox
+set number
+set nu
+set relativenumber
+set completeopt=menuone,noselect
+set hidden
+set noswapfile
+set incsearch
+set scrolloff=8
+set signcolumn=yes
+
+let g:indentLine_char_list = ['|', '¦', '┆', '┊']
+let g:nvim_tree_auto_open = 1
+let g:nvim_tree_highlight_opened_files = 1
+let g:nvim_tree_tab_open = 1
+let g:nvim_tree_git_hl = 1
 
 nnoremap <C-e> :NvimTreeToggle<CR>
 nnoremap <leader>r :NvimTreeRefresh<CR>
 nnoremap <leader>n :NvimTreeFindFile<CR>
 
+"split navigations
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+
+" Find files using Telescope command-line sugar.
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+
 " remap switching tabs
 nnoremap H gT
 nnoremap L gt
 
+nnoremap j gj
+nnoremap k gk
 " Go to tab by number
 nnoremap <leader>1 1gt
 nnoremap <leader>2 2gt
@@ -48,11 +85,6 @@ nnoremap <leader>9 9gt
 nnoremap <leader>0 :tablast<cr>
 " a list of groups can be found at `:help nvim_tree_highlight`
 highlight NvimTreeFolderIcon guibg=blue
-set number
-
-"autocomplete
-
-set completeopt=menuone,noselect
 
 inoremap <silent><expr> <C-Space> compe#complete()
 inoremap <silent><expr> <CR>      compe#confirm('<CR>')
@@ -66,7 +98,7 @@ nnoremap <silent> gD <cmd>lua vim.lsp.buf.declaration()<CR>
 nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
 nnoremap <silent> gi <cmd>lua vim.lsp.buf.implementation()<CR>
 nnoremap <silent> K <cmd>lua vim.lsp.buf.hover()<CR>
-nnoremap <silent> <C-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
+" nnoremap <silent> <C-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
 nnoremap <silent> <C-n> <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
 nnoremap <silent> <C-p> <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
 
@@ -75,17 +107,8 @@ autocmd BufWritePre *.js lua vim.lsp.buf.formatting_sync(nil, 100)
 autocmd BufWritePre *.jsx lua vim.lsp.buf.formatting_sync(nil, 100)
 autocmd BufWritePre *.py lua vim.lsp.buf.formatting_sync(nil, 100)
  
-nnoremap <C-p> :FZF<CR>
-let g:fzf_action = {
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-s': 'split',
-  \ 'ctrl-v': 'vsplit'
-  \}
-" requires silversearcher-ag
-" used to ignore gitignore files
-let $FZF_DEFAULT_COMMAND = 'ag -g ""'
 lua << EOF
-require'lspconfig'.pyright.setup{}
+require'lspconfig'.pylsp.setup{}
 require'compe'.setup {
   enabled = true;
   autocomplete = true;
@@ -134,8 +157,6 @@ end
 _G.tab_complete = function()
   if vim.fn.pumvisible() == 1 then
     return t "<C-n>"
-  elseif vim.fn['vsnip#available'](1) == 1 then
-    return t "<Plug>(vsnip-expand-or-jump)"
   elseif check_back_space() then
     return t "<Tab>"
   else
@@ -145,8 +166,6 @@ end
 _G.s_tab_complete = function()
   if vim.fn.pumvisible() == 1 then
     return t "<C-p>"
-  elseif vim.fn['vsnip#jumpable'](-1) == 1 then
-    return t "<Plug>(vsnip-jump-prev)"
   else
     -- If <S-Tab> is not working in your terminal, change it to <C-h>
     return t "<S-Tab>"
